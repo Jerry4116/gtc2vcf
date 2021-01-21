@@ -1946,6 +1946,9 @@ static inline char rev_allele(char allele) {
 
 static void gtcs_to_gs(gtc_t **gtc, int n, const bpm_t *bpm, const egt_t *egt, FILE *stream, int flags) {
     // print header
+    fputs("SNP Name\tSample ID\tGC Score\tX\tY\tAllele1 - AB\tAllele2 - AB\
+    \tLog R Ratio\tB Allele Freq\n", stream);
+    /*
     fputs("Index\tName\tAddress\tChr\tPosition", stream);
     if (flags & EGT_LOADED) fputs("\tGenTrain Score", stream);
     if (flags & BPM_LOADED) fputs("\tFrac A\tFrac C\tFrac G\tFrac T", stream);
@@ -1964,8 +1967,38 @@ static void gtcs_to_gs(gtc_t **gtc, int n, const bpm_t *bpm, const egt_t *egt, F
             fprintf(stream, "\t%s.Top Alleles\t%s.Plus/Minus Alleles", gtc[i]->display_name, gtc[i]->display_name);
     }
     fputc('\n', stream);
-
+    */
+    
     // print loci
+    const char *my_code2genotype[] = {
+        "-\t-", "A\tA", "A\tB", "B\tB", "-\t-", "-\t-", "-\t-", "-\t-",
+        "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-",
+        "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-",
+        "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-",
+        "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-",
+        "-\t-", "-\t-", "-\t-", "-\t-", "-\t-", "-\t-"};
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < bpm->num_loci; j++) {
+            LocusEntry *locus_entry = &bpm->locus_entries[j];
+            fprintf(stream, "%s\t%s", locus_entry->name, gtc[i]->display_name);  // SNP Name, Sample ID
+            float genotype_score;
+            get_element(gtc[i]->genotype_scores, (void *)&genotype_score, j);
+            fprintf(stream, "\t%.4f", genotype_score);  //GC Score
+            intensities_t intensities;
+            get_intensities(gtc[i], bpm, egt, j, &intensities);
+            fprintf(stream, "\t%.3f", intensities.norm_x);  //X (normX)
+            fprintf(stream, "\t%.3f", intensities.norm_y);  //Y (normY)
+            uint8_t genotype;
+            get_element(gtc[i]->genotypes, (void *)&genotype, j);
+            fprintf(stream, "\t%s", my_code2genotype[genotype]);  //Allele1 - AB\tAllele2 - AB
+            fprintf(stream, "\t%.4f", intensities.lrr);  //Log R Ratio
+            fprintf(stream, "\t%.4f\n", intensities.baf < 0 ? 0
+                                        : (intensities.baf > 1 ? 1 : intensities.baf));  //B Allele Freq\n
+        }
+    }
+
+    /*
     for (int j = 0; j < bpm->num_loci; j++) {
         LocusEntry *locus_entry = &bpm->locus_entries[j];
         int strand = !locus_entry->ref_strand ? -1
@@ -2027,6 +2060,7 @@ static void gtcs_to_gs(gtc_t **gtc, int n, const bpm_t *bpm, const egt_t *egt, F
         }
         fputc('\n', stream);
     }
+    */
 }
 
 static bcf_hdr_t *hdr_init(const faidx_t *fai, int flags) {
