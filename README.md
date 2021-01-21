@@ -1,3 +1,8 @@
+A modified version of gtc2vcf. '-Ot' now will produce a GenomeStudio tab-delimited text output with particular data fields. Some options and necessery checks were overridden. Use at your own risk.
+
+---
+original README.md:
+
 gtc2vcf
 =======
 
