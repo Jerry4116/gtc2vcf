@@ -1952,14 +1952,14 @@ static void gtcs_to_gs(gtc_t **gtc, int n, const bpm_t *bpm, const egt_t *egt, F
     for (int i = 0; i < n; i++) {
         if (flags & FORMAT_GT) fprintf(stream, "\t%s.GType", gtc[i]->display_name);
         if (flags & FORMAT_IGC) fprintf(stream, "\t%s.Score", gtc[i]->display_name);
-        if (flags & BPM_LOOKUPS & FORMAT_THETA) fprintf(stream, "\t%s.Theta", gtc[i]->display_name);
-        if (flags & BPM_LOOKUPS & FORMAT_R) fprintf(stream, "\t%s.R", gtc[i]->display_name);
+        if (flags & FORMAT_THETA) fprintf(stream, "\t%s.Theta", gtc[i]->display_name);
+        if (flags & FORMAT_R) fprintf(stream, "\t%s.R", gtc[i]->display_name);
         if (flags & FORMAT_BAF) fprintf(stream, "\t%s.B Allele Freq", gtc[i]->display_name);
         if (flags & FORMAT_LRR) fprintf(stream, "\t%s.Log R Ratio", gtc[i]->display_name);
         if (flags & FORMAT_X) fprintf(stream, "\t%s.X Raw", gtc[i]->display_name);
         if (flags & FORMAT_Y) fprintf(stream, "\t%s.Y Raw", gtc[i]->display_name);
-        if (flags & BPM_LOOKUPS & FORMAT_NORMX) fprintf(stream, "\t%s.X", gtc[i]->display_name);
-        if (flags & BPM_LOOKUPS & FORMAT_NORMY) fprintf(stream, "\t%s.Y", gtc[i]->display_name);
+        if (flags & FORMAT_NORMX) fprintf(stream, "\t%s.X", gtc[i]->display_name);
+        if (flags & FORMAT_NORMY) fprintf(stream, "\t%s.Y", gtc[i]->display_name);
         if (flags & FORMAT_GT)
             fprintf(stream, "\t%s.Top Alleles\t%s.Plus/Minus Alleles", gtc[i]->display_name, gtc[i]->display_name);
     }
@@ -2014,14 +2014,14 @@ static void gtcs_to_gs(gtc_t **gtc, int n, const bpm_t *bpm, const egt_t *egt, F
             }
             if (flags & FORMAT_GT) fprintf(stream, "\t%s", code2genotype[genotype]);
             if (flags & FORMAT_IGC) fprintf(stream, "\t%f", genotype_score);
-            if (flags & BPM_LOOKUPS & FORMAT_THETA) fprintf(stream, "\t%f", intensities.ilmn_theta);
-            if (flags & BPM_LOOKUPS & FORMAT_R) fprintf(stream, "\t%f", intensities.ilmn_r);
+            if (flags & FORMAT_THETA) fprintf(stream, "\t%f", intensities.ilmn_theta);
+            if (flags & FORMAT_R) fprintf(stream, "\t%f", intensities.ilmn_r);
             if (flags & FORMAT_BAF) fprintf(stream, "\t%f", intensities.baf);
             if (flags & FORMAT_LRR) fprintf(stream, "\t%f", intensities.lrr);
             if (flags & FORMAT_X) fprintf(stream, "\t%d", intensities.raw_x);
             if (flags & FORMAT_Y) fprintf(stream, "\t%d", intensities.raw_y);
-            if (flags & BPM_LOOKUPS & FORMAT_NORMX) fprintf(stream, "\t%f", intensities.norm_x);
-            if (flags & BPM_LOOKUPS & FORMAT_NORMY) fprintf(stream, "\t%f", intensities.norm_y);
+            if (flags & FORMAT_NORMX) fprintf(stream, "\t%f", intensities.norm_x);
+            if (flags & FORMAT_NORMY) fprintf(stream, "\t%f", intensities.norm_y);
             if (flags & FORMAT_GT)
                 fprintf(stream, "\t%c%c\t%c%c", base_call[0], base_call[1], ref_call[0], ref_call[1]);
         }
