@@ -3344,6 +3344,7 @@ int run(int argc, char *argv[]) {
         if (output_type == FT_TAB_TEXT) {
             fprintf(stderr, "Writing GenomeStudio final report file\n");
             gtcs_to_gs((gtc_t **)files, nfiles, bpm, egt, out_txt, flags);
+            fprintf(stderr, "Complete!\n");
         } else {
             fprintf(stderr, "Writing VCF file\n");
             bcf_hdr_t *hdr = hdr_init(fai, flags);
