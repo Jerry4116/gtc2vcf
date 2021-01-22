@@ -1853,6 +1853,8 @@ static void get_norm_xy(uint16_t raw_x, uint16_t raw_y, const gtc_t *gtc, const 
         float temp_x3 = temp_x2 - xform->shear * temp_y2;
         *norm_x = temp_x3 < 0.0f ? 0.0f : temp_x3 / xform->scale_x;
         *norm_y = temp_y2 < 0.0f ? 0.0f : temp_y2 / xform->scale_y;
+        if(isnan(*norm_x)) *norm_x = NAN;
+		  if(isnan(*norm_y)) *norm_y = NAN;  // prevent '-nan'
     } else {
         *norm_x = NAN;
         *norm_y = NAN;
