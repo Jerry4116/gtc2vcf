@@ -1948,7 +1948,7 @@ static inline char rev_allele(char allele) {
 
 static void gtcs_to_gs(gtc_t **gtc, int n, const bpm_t *bpm, const egt_t *egt, FILE *stream, int flags) {
     // print header
-    fputs("SNP Name\tSample ID\tGC Score\tX\tY\tAllele1 - AB\tAllele2 - AB\
+    fputs("SNP Name\tSample ID\tAllele1 - Top\tAllele2 - Top\tGC Score\tX\tY\tAllele1 - AB\tAllele2 - AB\
     \tLog R Ratio\tB Allele Freq\n", stream);
     /*
     fputs("Index\tName\tAddress\tChr\tPosition", stream);
@@ -1984,6 +1984,9 @@ static void gtcs_to_gs(gtc_t **gtc, int n, const bpm_t *bpm, const egt_t *egt, F
         for (int j = 0; j < bpm->num_loci; j++) {
             LocusEntry *locus_entry = &bpm->locus_entries[j];
             fprintf(stream, "%s\t%s", locus_entry->name, gtc[i]->display_name);  // SNP Name, Sample ID
+            BaseCall base_call;
+            get_element(gtc[i]->base_calls, (void *)&base_call, j);
+	    fprintf(stream, "\t%c\t%c", base_call[0], base_call[1]);  //Allele1 - Top\tAllele2 - Top
             float genotype_score;
             get_element(gtc[i]->genotype_scores, (void *)&genotype_score, j);
             fprintf(stream, "\t%.4f", genotype_score);  //GC Score
