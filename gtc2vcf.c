@@ -1949,7 +1949,7 @@ static inline char rev_allele(char allele) {
 static void gtcs_to_gs(gtc_t **gtc, int n, const bpm_t *bpm, const egt_t *egt, FILE *stream, int flags) {
     // print header
     fputs("SNP Name\tSample ID\tAllele1 - Top\tAllele2 - Top\tGC Score\tX\tY\tAllele1 - AB\tAllele2 - AB\
-    \tAllele1 - Plus\tAllele2 - Plus\tLog R Ratio\tB Allele Freq\n", stream);
+    \tLog R Ratio\tB Allele Freq\n", stream);
     /*
     fputs("Index\tName\tAddress\tChr\tPosition", stream);
     if (flags & EGT_LOADED) fputs("\tGenTrain Score", stream);
@@ -1997,36 +1997,6 @@ static void gtcs_to_gs(gtc_t **gtc, int n, const bpm_t *bpm, const egt_t *egt, F
             uint8_t genotype;
             get_element(gtc[i]->genotypes, (void *)&genotype, j);
             fprintf(stream, "\t%s", my_code2genotype[genotype]);  //Allele1 - AB\tAllele2 - AB
-	    int strand = !locus_entry->ref_strand ? -1
-                                                  : (strcmp(locus_entry->ref_strand, "+") == 0
-                                                         ? 0
-                                                         : (strcmp(locus_entry->ref_strand, "-") == 0 ? 1 : -1));		
-            char allele_a = strand ? rev_allele(locus_entry->snp[1]) : locus_entry->snp[1];
-            char allele_b = strand ? rev_allele(locus_entry->snp[3]) : locus_entry->snp[3];
-            if (strand < 0) error("Unable to process reference strand %s\n", locus_entry->ref_strand);		
-            BaseCall ref_call;
-            switch (genotype) {
-            case GT_NC:
-                ref_call[0] = '-';
-                ref_call[1] = '-';
-                break;
-            case GT_AA:
-                ref_call[0] = allele_a;
-                ref_call[1] = allele_a;
-                break;
-            case GT_AB:
-                ref_call[0] = allele_a;
-                ref_call[1] = allele_b;
-                break;
-            case GT_BB:
-                ref_call[0] = allele_b;
-                ref_call[1] = allele_b;
-                break;
-            default:
-                error("Unable to process marker %s\n", locus_entry->name);
-                break;
-            }
-            fprintf(stream, "\t%c\t%c", ref_call[0], ref_call[1]);  //Allele1 - Plus\tAllele2 - Plus		
             fprintf(stream, "\t%.4f", intensities.lrr);  //Log R Ratio
             fprintf(stream, "\t%.4f\n", intensities.baf < 0 ? 0
                                         : (intensities.baf > 1 ? 1 : intensities.baf));  //B Allele Freq\n
