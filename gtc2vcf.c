@@ -1948,8 +1948,7 @@ static inline char rev_allele(char allele) {
 
 static void gtcs_to_gs(gtc_t **gtc, int n, const bpm_t *bpm, const egt_t *egt, FILE *stream, int flags) {
     // print header
-    fputs("SNP Name\tSample ID\tAllele1 - Top\tAllele2 - Top\tGC Score\tX\tY\tAllele1 - AB\tAllele2 - AB\
-    \tLog R Ratio\tB Allele Freq\n", stream);
+    fputs("SNP Name\tSample ID\tAllele1 - Top\tAllele2 - Top\tGC Score\tX\tY\tAllele1 - AB\tAllele2 - AB\tLog R Ratio\tB Allele Freq\n", stream);
     /*
     fputs("Index\tName\tAddress\tChr\tPosition", stream);
     if (flags & EGT_LOADED) fputs("\tGenTrain Score", stream);
